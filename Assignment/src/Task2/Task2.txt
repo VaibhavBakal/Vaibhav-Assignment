@@ -1,0 +1,35 @@
+Task 2
+
+1. What is the exact cause of ConcurrentModificationException in Java?
+
+Ans-ConcurrentModificationException occurs when a collection is structurally modified while it is being iterated using an Iterator, enhanced for-loop, or stream operation, except through the iterator's own remove() method.
+
+Example:
+
+for (Transaction txn : transactions) {
+    transactions.remove(txn); // Causes ConcurrentModificationException
+}
+-----
+
+2. What code pattern at line 142 most likely triggered this error?
+
+Ans-
+for (Transaction txn : transactions) {
+    if (txn.isInvalid()) {
+        transactions.remove(txn);
+    }
+}
+------
+3. Minor code change that resolves this safely
+
+Ans-Use the iterator's remove() method.
+
+Iterator<Transaction> itr = transactions.iterator();
+
+while (itr.hasNext()) {
+    Transaction txn = itr.next();
+
+    if (txn.isInvalid()) {
+        itr.remove();
+    }
+}
